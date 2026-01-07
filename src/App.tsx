@@ -48,7 +48,7 @@ export const App = () => {
   return (
     <div>
       <h1>Swap Hub</h1>
-
+      
       <div>
         {goods.map((good) => (
           <GoodCard key={good.id} good={good} />
