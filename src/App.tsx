@@ -1,9 +1,9 @@
-import { GoodCard } from "./components/GoodCard/GoodCard";
+import { ProductCard } from "./components/ProductCard/ProductCard";
 
 /**
  * (Дублирование) Убрать при завершении настройки базовой структуры
  */
-type Good = {
+type Product = {
   id: number;
   name: string;
   price: number;
@@ -13,7 +13,7 @@ type Good = {
 };
  
 export const App = () => {
-  const goods: Good[] = [
+  const products: Product[] = [
     {
       id: 1,
       name: "Iphone",
@@ -50,8 +50,8 @@ export const App = () => {
       <h1>Swap Hub</h1>
       
       <div>
-        {goods.map((good) => (
-          <GoodCard key={good.id} good={good} />
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </div>

@@ -1,5 +1,5 @@
-export type Good = {
-  good: {
+export type Product = {
+  product: {
     id: number;
     name: string;
     price: number;
