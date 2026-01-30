@@ -1,5 +1,5 @@
 {
-  "name": "webswaphub",
+  "name": "@swaphub/webswaphub",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,7 +11,10 @@
     "prettify": "prettier --log-level warn --cache --write \"src/**/*.{ts,tsx,js,json,yml,scss}\" \"*.{ts,tsx,js,json,yml,scss}\" --ignore-path .gitignore"
   },
   "dependencies": {
-    "-": "^0.0.1",
+    "@swaphub/backend": "workspace:*",
+    "@tanstack/react-query": "^5.80.3",
+    "@trpc/client": "^11.9.0",
+    "@trpc/react-query": "^11.9.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "sass-embedded": "^1.97.2"

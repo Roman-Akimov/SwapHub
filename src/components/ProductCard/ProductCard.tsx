@@ -1,7 +1,7 @@
-import type { Product } from "../../types/product.type";
+import type { Product } from '../../types/product.type'
 
 export const ProductCard = (props: Product) => {
-  const { product } = props;
+  const { product } = props
 
   return (
     <div className="products-view">
@@ -13,5 +13,5 @@ export const ProductCard = (props: Product) => {
       <img src={product.image} alt={product.name} width={80} />
       <p>{product.description}</p>
     </div>
-  );
-};
+  )
+}
