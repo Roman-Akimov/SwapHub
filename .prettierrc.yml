@@ -1,0 +1,5 @@
+printWidth: 120 # перенос после 120 символов
+trailingComma: es5 # установка запятых, где разрешает JS
+tabWidth: 2 # tab как 2 пробела
+semi: true # убраны ;
+singleQuote: true # одинарные кавычки

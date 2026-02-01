@@ -1,0 +1,56 @@
+root: true
+
+env:
+  es2021: true
+  node: true
+
+parser: '@typescript-eslint/parser'
+
+parserOptions:
+  ecmaVersion: latest
+  sourceType: module
+
+plugins:
+  - '@typescript-eslint'
+
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+  - prettier
+
+rules:
+  # Общие правила
+  no-console: warn
+  semi: off
+  quotes: [error, single, { avoidEscape: true }]
+  indent: [error, 2, { SwitchCase: 1 }]
+  eqeqeq: error
+  curly: [error, all]
+  no-var: error
+  prefer-const: error
+  brace-style: [error, 1tbs, { allowSingleLine: false }] # стиль скобок
+  nonblock-statement-body-position: [error, below] # тело всегда ниже
+  arrow-body-style: [error, always] # стрелочные функции тоже со скобками
+
+  # TypeScript
+  '@typescript-eslint/no-unused-vars':
+    - warn
+    - argsIgnorePattern: '^_'
+      varsIgnorePattern: '^_'
+      caughtErrorsIgnorePattern: '^_'
+
+  '@typescript-eslint/explicit-function-return-type': off
+  '@typescript-eslint/no-explicit-any': warn
+  '@typescript-eslint/consistent-type-assertions':
+    - error
+    - assertionStyle: as
+      objectLiteralTypeAssertions: never
+
+ignorePatterns:
+  - node_modules
+  - dist
+  - build
+  - '*.js'
+  - '*.config.js'
+  - coverage
+  - '**/generated'
