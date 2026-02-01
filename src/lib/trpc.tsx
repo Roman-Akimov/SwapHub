@@ -1,8 +1,8 @@
-import type { AppRouter } from '@swaphub/backend/src/trpc'
-import { QueryClient } from '@tanstack/react-query'
-import { createTRPCReact, httpBatchLink } from '@trpc/react-query'
+import type { AppRouter } from '@swaphub/backend/src/trpc';
+import { QueryClient } from '@tanstack/react-query';
+import { createTRPCReact, httpBatchLink } from '@trpc/react-query';
 
-export const trpc = createTRPCReact<AppRouter>()
+export const trpc = createTRPCReact<AppRouter>();
 
 /** Управляет логикой запросов. Имеет настройки.
  * это центральное хранилище React Query, где лежит:
@@ -16,7 +16,7 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: false, // не переспрашивает данные при возвращении на сайт
     },
   },
-})
+});
 
 export const trpcClient = trpc.createClient({
   links: [
@@ -26,7 +26,7 @@ export const trpcClient = trpc.createClient({
       url: 'http://localhost:3000/trpc',
     }),
   ],
-})
+});
 
 /** Подробное объяснение работы кода:
  * происходит цепочка:

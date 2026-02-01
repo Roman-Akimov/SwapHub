@@ -1,5 +1,5 @@
-import { trpc } from '../../lib/trpc'
-import { ProductCard } from '../ProductCard/ProductCard'
+import { trpc } from '../../lib/trpc';
+import { ProductCard } from '../ProductCard/ProductCard';
 // /**
 //  * (Дублирование) Убрать при завершении настройки базовой структуры
 //  */
@@ -13,20 +13,26 @@ import { ProductCard } from '../ProductCard/ProductCard'
 // }
 
 export const AllProducts = () => {
-  const { data, error, isLoading, isFetching, isError } = trpc.getProducts.useQuery()
-  if (isLoading || isFetching) return <span>Loading...</span>
-  if (isError) return <span>Error: {error.message}</span>
-  if (!data) return <span>No data</span> // <-- важно для TS и на всякий случай
+  const { data, error, isLoading, isFetching, isError } = trpc.getProducts.useQuery();
+  if (isLoading || isFetching) {
+    return <span>Loading...</span>;
+  }
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
+  if (!data) {
+    return <span>No data</span>;
+  } // <-- важно для TS и на всякий случай
 
   return (
     <div>
       <h1>Swap Hub</h1>
 
       <div>
-        {data.products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        {data.products.map((product) => {
+          return <ProductCard key={product.id} product={product} />;
+        })}
       </div>
     </div>
-  )
-}
+  );
+};

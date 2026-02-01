@@ -1,0 +1,45 @@
+extends:
+  - ../.eslintrc.yml
+  - plugin:react/recommended
+  - plugin:react-hooks/recommended
+
+env:
+  browser: true
+  node: false
+
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+
+plugins:
+  - react
+  - react-hooks
+
+settings:
+  react:
+    version: detect
+
+rules:
+  # React
+  react/react-in-jsx-scope: off
+  react/prop-types: off
+  react/jsx-uses-react: error
+  react/jsx-uses-vars: error
+  react/jsx-no-target-blank: error
+  react/self-closing-comp: error
+
+  # React Hooks
+  react-hooks/rules-of-hooks: error
+  react-hooks/exhaustive-deps: warn
+
+  # TypeScript
+  '@typescript-eslint/no-explicit-any': error
+  '@typescript-eslint/no-non-null-assertion': error
+
+overrides:
+  - files:
+      - vite.config.ts
+    rules:
+      '@typescript-eslint/no-explicit-any': off
+      'import/order': off
+      'no-console': off
