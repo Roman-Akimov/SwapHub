@@ -18,6 +18,10 @@ export const queryClient = new QueryClient({
   },
 });
 
+const number: number = 12;
+// eslint-disable-next-line no-console
+console.log(number);
+
 export const trpcClient = trpc.createClient({
   links: [
     // links в trpc - это аналог middleware
