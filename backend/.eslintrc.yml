@@ -1,2 +1,12 @@
+extends: ../.eslintrc.yml
+
+env:
+  node: true
+  browser: false
+
 parserOptions:
-  project: ./tsconfig.json
+  ecmaVersion: latest
+  sourceType: module
+
+rules:
+  no-console: off
