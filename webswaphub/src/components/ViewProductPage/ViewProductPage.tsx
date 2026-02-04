@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import type { ViewProductRouteParams } from '../../lib/routes';
+import { type ViewProductRouteParams } from '../../lib/routes';
 
 export const ViewProductPage = () => {
   const { productName } = useParams() as ViewProductRouteParams;
