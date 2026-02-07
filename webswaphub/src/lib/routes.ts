@@ -8,12 +8,12 @@ const getRouteParams = <T extends Record<string, boolean>>(object: T) => {
   ) as Record<keyof T, string>;
 };
 
-export const viewProductRouteParams = getRouteParams({ productName: true });
+export const viewProductRouteParams = getRouteParams({ productId: true });
 
 export type ViewProductRouteParams = typeof viewProductRouteParams;
 
-export const getViewProductPage = ({ productName }: ViewProductRouteParams) => {
-  return `/products/${productName}`;
+export const getViewProductPage = ({ productId }: ViewProductRouteParams) => {
+  return `/products/${productId}`;
 };
 
 export const getAllProductsPage = () => {

@@ -1,5 +1,6 @@
-import { initTRPC } from '@trpc/server';
-import {generateProducts} from './lib/mock/products'
+import { initTRPC, TRPCError } from '@trpc/server';
+import { generateProducts } from './lib/mock/products';
+import { z } from 'zod';
 
 // const products = [
 //   {
@@ -32,9 +33,28 @@ import {generateProducts} from './lib/mock/products'
 const app = initTRPC.create();
 const products = generateProducts(30);
 
+export const GetProductByIdInputSchema = z
+  .object({
+    productId: z.coerce.number().int().positive(),
+  })
+  .strict();
+
 export const appRouter = app.router({
   getProducts: app.procedure.query(() => {
     return { products };
+  }),
+  getProduct: app.procedure.input(GetProductByIdInputSchema).query(({ input }) => {
+    const product = products.find((p) => {
+      return p.id === input.productId;
+    });
+
+    if (!product) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: `Product with id=${input.productId} not found`,
+      });
+    }
+    return { product };
   }),
 });
 

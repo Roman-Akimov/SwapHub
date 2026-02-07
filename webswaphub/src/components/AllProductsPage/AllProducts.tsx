@@ -27,7 +27,7 @@ export const AllProducts = () => {
           return (
             <Link
               key={product.id}
-              to={getViewProductPage({ productName: product.name })}
+              to={getViewProductPage({ productId: String(product.id) })}
               style={{
                 textDecoration: 'none',
                 color: 'inherit',
