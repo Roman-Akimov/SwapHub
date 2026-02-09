@@ -1,0 +1,30 @@
+@import '../../styles/_vars.scss';
+@import '../../styles/_mixins.scss';
+@import 'tailwindcss';
+
+.title {
+  @include h1;
+}
+
+.products {
+  .product {
+    padding: 20px;
+    border: 1px solid $black;
+    border-radius: 10px;
+    & + .product {
+      margin-top: 20px;
+    }
+
+    .productName {
+      @include h2;
+
+      .productLink {
+        @include link;
+      }
+    }
+
+    .productDescription {
+      font-size: 18px;
+    }
+  }
+}

@@ -1,16 +1,20 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { AllProducts } from './components/AllProductsPage/AllProducts';
-import { ViewProductPage } from './components/ViewProductPage/ViewProductPage';
+import { AllProducts } from './pages/AllProductsPage/AllProducts';
+import { ViewProductPage } from './pages/ViewProductPage/ViewProduct';
 import { TrpcProvider } from './lib/TrpcProvider';
 import { getAllProductsPage, getViewProductPage, viewProductRouteParams } from './lib/routes';
+import { Layout } from './components/layout/Layout';
+import './styles/global.scss'
 
 export const App = () => {
   return (
     <TrpcProvider>
       <BrowserRouter>
         <Routes>
-          <Route path={getAllProductsPage()} element={<AllProducts />} />
-          <Route path={getViewProductPage(viewProductRouteParams)} element={<ViewProductPage />} />
+          <Route element={<Layout />}>
+            <Route path={getAllProductsPage()} element={<AllProducts />} />
+            <Route path={getViewProductPage(viewProductRouteParams)} element={<ViewProductPage />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </TrpcProvider>

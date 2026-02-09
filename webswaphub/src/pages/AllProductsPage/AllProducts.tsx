@@ -19,6 +19,7 @@ export const AllProducts = () => {
 
   return (
     <div style={{ padding: '20px' }}>
+      <h1 className="text-3xl font-bold underline">Hello world!</h1>
       <h1>Swap Hub</h1>
       <h2>All Products</h2>
 
