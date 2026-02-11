@@ -3,7 +3,7 @@ import { AllProducts } from './pages/AllProducts/AllProducts';
 import { ViewProductPage } from './pages/ViewProduct/ViewProduct';
 import { TrpcProvider } from './lib/TrpcProvider';
 import * as routes from './lib/routes';
-import { Layout } from './components/layout/Layout';
+import { Layout } from './components/Layout/Layout';
 import './styles/global.scss'
 import { CreateProductForm } from './pages/CreateProductForm/CreateProductForm';
 

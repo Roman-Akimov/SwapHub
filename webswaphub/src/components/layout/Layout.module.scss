@@ -1,35 +1,33 @@
-@import '../../styles/_vars.scss';
-@import '../../styles/_mixins.scss';
+@import '../../styles/vars';
+@import '../../styles/mixins';
 
 $bp: '<=900px';
 
 /* Палитра “как на макете”: тёплый фон + холодное пятно в центре */
 $warm1: #f4ecdf;
 $warm2: #efe6d9;
-$cool: rgba(103, 152, 156, 0.55);
+$cool: rgb(103, 152, 156, 0.55);
 
 /* Текст как на макете: тёмно-бирюзовый */
-$text: rgba(9, 55, 63, 0.92);
-$textSoft: rgba(9, 55, 63, 0.7);
+$text: rgb(9, 55, 63, 0.92);
+$textSoft: rgb(9, 55, 63, 0.7);
 
 /* Стекло в стиле iOS */
-$glassBg: rgba(255, 255, 255, 0.22);
-$glassBgHover: rgba(255, 255, 255, 0.28);
-$glassBorder: rgba(255, 255, 255, 0.4);
-$shadow: 0 18px 55px rgba(0, 0, 0, 0.12);
+$glassBg: rgb(255, 255, 255, 0.22);
+$glassBgHover: rgb(255, 255, 255, 0.28);
+$glassBorder: rgb(255, 255, 255, 0.4);
+$shadow: 0 18px 55px rgb(0, 0, 0, 0.12);
 
 /* Универсальный миксин стеклянной поверхности */
 @mixin glass($radius: 22px, $bg: $glassBg) {
   background: $bg;
   border: 1px solid $glassBorder;
   border-radius: $radius;
-
   backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
 
   box-shadow:
     $shadow,
-    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    inset 0 1px 0 rgb(255, 255, 255, 0.45);
 }
 
 /* ====== LAYOUT (превращаем header в левое меню только стилями) ====== */
@@ -45,8 +43,8 @@ $shadow: 0 18px 55px rgba(0, 0, 0, 0.12);
   /* Фон “как на скрине”: тёплый + холодный центр */
   background:
     radial-gradient(circle at 50% 48%, $cool 0%, transparent 55%),
-    radial-gradient(circle at 10% 15%, rgba(255, 255, 255, 0.55) 0%, transparent 55%),
-    radial-gradient(circle at 92% 20%, rgba(255, 255, 255, 0.45) 0%, transparent 55%),
+    radial-gradient(circle at 10% 15%, rgb(255, 255, 255, 0.55) 0%, transparent 55%),
+    radial-gradient(circle at 92% 20%, rgb(255, 255, 255, 0.45) 0%, transparent 55%),
     linear-gradient(180deg, $warm1, $warm2);
 
   @include media($bp) {
@@ -76,7 +74,8 @@ $shadow: 0 18px 55px rgba(0, 0, 0, 0.12);
 
 .logo {
   margin: 0;
-  font-size: 46px;
+  text-align: center;
+  font-size: 50px;
   font-weight: 900;
   letter-spacing: -0.8px;
   line-height: 1;
@@ -88,17 +87,17 @@ $shadow: 0 18px 55px rgba(0, 0, 0, 0.12);
   padding: 10px 12px;
   border-radius: 22px;
 
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgb(255, 255, 255, 0.2);
+  border: 1px solid rgb(255, 255, 255, 0.4);
 
   position: relative;
   overflow: hidden;
 
-  &::before {
+  &:before {
     content: '';
     position: absolute;
     inset: -50% -70%;
-    background: linear-gradient(120deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+    background: linear-gradient(120deg, rgb(255, 255, 255, 0.3), rgb(255, 255, 255, 0.12), rgb(255, 255, 255, 0));
     transform: rotate(12deg);
     pointer-events: none;
   }
@@ -147,7 +146,7 @@ $shadow: 0 18px 55px rgba(0, 0, 0, 0.12);
   &:hover {
     transform: translateY(-1px);
     background: $glassBgHover;
-    border-color: rgba(255, 255, 255, 0.52);
+    border-color: rgb(255, 255, 255, 0.52);
   }
 
   &:active {
@@ -155,7 +154,7 @@ $shadow: 0 18px 55px rgba(0, 0, 0, 0.12);
   }
 
   &:focus-visible {
-    outline: 2px solid rgba(9, 55, 63, 0.25);
+    outline: 2px solid rgb(9, 55, 63, 0.25);
     outline-offset: 2px;
   }
 }
@@ -210,18 +209,17 @@ $shadow: 0 18px 55px rgba(0, 0, 0, 0.12);
   /* перебиваем inline */
   text-decoration: none !important;
   color: $text !important;
-  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  border: 1px solid rgb(255, 255, 255, 0.45) !important;
   border-radius: 26px !important;
-  background: rgba(255, 255, 255, 0.18) !important;
+  background: rgb(255, 255, 255, 0.18) !important;
   padding: 14px !important;
 
   /* стекло */
   backdrop-filter: blur(18px) saturate(160%) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(160%) !important;
 
   box-shadow:
-    0 16px 45px rgba(0, 0, 0, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
+    0 16px 45px rgb(0, 0, 0, 0.12),
+    inset 0 1px 0 rgb(255, 255, 255, 0.45) !important;
 
   display: grid !important;
   gap: 10px !important;
@@ -235,8 +233,8 @@ $shadow: 0 18px 55px rgba(0, 0, 0, 0.12);
 /* Hover карточки */
 .content a:hover {
   transform: translateY(-2px) !important;
-  background: rgba(255, 255, 255, 0.26) !important;
-  border-color: rgba(255, 255, 255, 0.6) !important;
+  background: rgb(255, 255, 255, 0.26) !important;
+  border-color: rgb(255, 255, 255, 0.6) !important;
 }
 
 /* Заголовок товара внутри карточки */
@@ -263,7 +261,7 @@ $shadow: 0 18px 55px rgba(0, 0, 0, 0.12);
   object-fit: cover !important;
   border-radius: 18px !important;
 
-  background: rgba(0, 0, 0, 0.06) !important;
+  background: rgb(0, 0, 0, 0.06) !important;
 }
 
 /* ====== ViewProductPage (тоже с inline padding) ====== */
@@ -274,5 +272,5 @@ $shadow: 0 18px 55px rgba(0, 0, 0, 0.12);
   object-fit: cover !important;
   border-radius: 26px !important;
   margin: 14px 0 !important;
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 16px 45px rgb(0, 0, 0, 0.12) !important;
 }

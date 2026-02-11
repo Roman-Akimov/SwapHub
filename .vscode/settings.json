@@ -1,3 +1,4 @@
 {
-    "eslint.workingDirectories": ["backend", "webswaphub"]
+  "eslint.workingDirectories": ["backend", "webswaphub"],
+  "stylelint.validate": ["css", "scss"]
 }

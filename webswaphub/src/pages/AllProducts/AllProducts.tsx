@@ -19,8 +19,7 @@ export const AllProducts = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Swap Hub</h1>
-      <h2>Все товары</h2>
+      <h1>Все товары</h1>
 
       <div style={{ display: 'grid', gap: '16px', marginTop: '20px' }}>
         {data.products.map((product) => {
