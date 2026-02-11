@@ -8,20 +8,20 @@ export const ViewProductPage = () => {
   const { data, isLoading, isError, error } = trpc.getProduct.useQuery({ productId }, { enabled: !!productId });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>Загрузка...</div>;
   }
   if (isError) {
     if (error.data?.code === 'BAD_REQUEST') {
       // Если productId не число
-      return <div>Invalid product id</div>;
+      return <div>Неправильно заданный id</div>;
     }
     if (error.data?.code === 'NOT_FOUND') {
-      return <div>Product not found</div>;
+      return <div>Продукт не найден</div>;
     }
-    return <div>Something went wrong: {error.message}</div>;
+    return <div>ЧТо-то пошло не так: {error.message}</div>;
   }
   if (!data?.product) {
-    return <div>Product not found</div>;
+    return <div>Извините, продукт не найден..</div>;
   }
 
   const { product } = data;
@@ -30,7 +30,7 @@ export const ViewProductPage = () => {
     <div style={{ padding: 20 }}>
       <h1>{product.name}</h1>
       <p>
-        Price: {product.price} {product.currency}
+        Цена: {product.price} {product.currency}
       </p>
       <img src={product.image} alt={product.name} width={80} />
       <p>{product.description}</p>

@@ -6,22 +6,21 @@ export const AllProducts = () => {
   const { data, error, isLoading, isFetching, isError } = trpc.getProducts.useQuery();
 
   if (isLoading || isFetching) {
-    return <div>Loading products...</div>;
+    return <div>Загрузка товаров...</div>;
   }
 
   if (isError) {
-    return <div>Error: {error.message}</div>;
+    return <div>Ошибка: {error.message}</div>;
   }
 
   if (!data || !data.products) {
-    return <div>No products available</div>;
+    return <div>Нет доступных товаров</div>;
   }
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
       <h1>Swap Hub</h1>
-      <h2>All Products</h2>
+      <h2>Все товары</h2>
 
       <div style={{ display: 'grid', gap: '16px', marginTop: '20px' }}>
         {data.products.map((product) => {

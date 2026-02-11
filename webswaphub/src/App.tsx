@@ -1,10 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { AllProducts } from './pages/AllProductsPage/AllProducts';
-import { ViewProductPage } from './pages/ViewProductPage/ViewProduct';
+import { AllProducts } from './pages/AllProducts/AllProducts';
+import { ViewProductPage } from './pages/ViewProduct/ViewProduct';
 import { TrpcProvider } from './lib/TrpcProvider';
-import { getAllProductsPage, getViewProductPage, viewProductRouteParams } from './lib/routes';
+import * as routes from './lib/routes';
 import { Layout } from './components/layout/Layout';
 import './styles/global.scss'
+import { CreateProductForm } from './pages/CreateProductForm/CreateProductForm';
 
 export const App = () => {
   return (
@@ -12,8 +13,9 @@ export const App = () => {
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
-            <Route path={getAllProductsPage()} element={<AllProducts />} />
-            <Route path={getViewProductPage(viewProductRouteParams)} element={<ViewProductPage />} />
+            <Route path={routes.getAllProductsPage()} element={<AllProducts />} />
+            <Route path={routes.getNewProductRoute()} element={<CreateProductForm />} />
+            <Route path={routes.getViewProductPage(routes.viewProductRouteParams)} element={<ViewProductPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

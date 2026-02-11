@@ -1,5 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
-import { getAllProductsPage } from '../../lib/routes';
+import { getAllProductsPage, getNewProductRoute } from '../../lib/routes';
 import css from './Layout.module.scss';
 
 export const Layout = () => {
@@ -12,7 +12,12 @@ export const Layout = () => {
           <ul className={css.menu}>
             <li className={css.item}>
               <Link className={css.link} to={getAllProductsPage()}>
-                All products
+                Все товары
+              </Link>
+            </li>
+            <li className={css.item}>
+              <Link className={css.link} to={getNewProductRoute()}>
+                Выставить товар
               </Link>
             </li>
           </ul>

@@ -51,7 +51,7 @@ export const appRouter = app.router({
     if (!product) {
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: `Product with id=${input.productId} not found`,
+        message: `Товар с id=${input.productId} не найден`,
       });
     }
     return { product };

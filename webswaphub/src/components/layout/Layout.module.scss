@@ -1,58 +1,278 @@
 @import '../../styles/_vars.scss';
 @import '../../styles/_mixins.scss';
 
-$breakpoint: '<=900px';
+$bp: '<=900px';
+
+/* Палитра “как на макете”: тёплый фон + холодное пятно в центре */
+$warm1: #f4ecdf;
+$warm2: #efe6d9;
+$cool: rgba(103, 152, 156, 0.55);
+
+/* Текст как на макете: тёмно-бирюзовый */
+$text: rgba(9, 55, 63, 0.92);
+$textSoft: rgba(9, 55, 63, 0.7);
+
+/* Стекло в стиле iOS */
+$glassBg: rgba(255, 255, 255, 0.22);
+$glassBgHover: rgba(255, 255, 255, 0.28);
+$glassBorder: rgba(255, 255, 255, 0.4);
+$shadow: 0 18px 55px rgba(0, 0, 0, 0.12);
+
+/* Универсальный миксин стеклянной поверхности */
+@mixin glass($radius: 22px, $bg: $glassBg) {
+  background: $bg;
+  border: 1px solid $glassBorder;
+  border-radius: $radius;
+
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+
+  box-shadow:
+    $shadow,
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+/* ====== LAYOUT (превращаем header в левое меню только стилями) ====== */
 
 .layout {
+  min-height: 100vh;
   display: flex;
-  flex-flow: row nowrap;
-  height: 100%;
-  @include media($breakpoint) {
-    flex-flow: column nowrap;
+  gap: 22px;
+  padding: 22px;
+
+  color: $text;
+
+  /* Фон “как на скрине”: тёплый + холодный центр */
+  background:
+    radial-gradient(circle at 50% 48%, $cool 0%, transparent 55%),
+    radial-gradient(circle at 10% 15%, rgba(255, 255, 255, 0.55) 0%, transparent 55%),
+    radial-gradient(circle at 92% 20%, rgba(255, 255, 255, 0.45) 0%, transparent 55%),
+    linear-gradient(180deg, $warm1, $warm2);
+
+  @include media($bp) {
+    flex-direction: column;
+    padding: 16px;
+    gap: 16px;
+  }
+}
+
+/* В JSX это header, но стилями делаем его “sidebar” как на макете */
+.header {
+  flex: 0 0 250px;
+  padding: 16px;
+  height: calc(100vh - 44px);
+
+  @include glass(26px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  @include media($bp) {
+    flex: 0 0 auto;
+    height: auto;
+  }
+}
+
+.logo {
+  margin: 0;
+  font-size: 46px;
+  font-weight: 900;
+  letter-spacing: -0.8px;
+  line-height: 1;
+
+  color: $text;
+
+  /* лёгкий “блик” внутри логотипа-плашки */
+  display: inline-block;
+  padding: 10px 12px;
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -50% -70%;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+    transform: rotate(12deg);
+    pointer-events: none;
+  }
+}
+
+.nav {
+  /* пока пусто, но оставляем как блок */
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: grid;
+  gap: 10px;
+
+  @include media($bp) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.item {
+  /* просто контейнер */
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 14px;
+  border-radius: 18px;
+
+  text-decoration: none;
+  font-weight: 700;
+  color: $text;
+
+  @include glass(18px, rgba(255, 255, 255, 0.18));
+
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    background: $glassBgHover;
+    border-color: rgba(255, 255, 255, 0.52);
   }
 
-  .navigation {
-    height: 100%;
-    overflow: auto;
-    flex: 0 0 200px;
-    padding: 20px 30px;
-    border-right: 1px solid $black;
-    @include media($breakpoint) {
-      overflow: visible;
-      flex: 0 0 auto;
-      height: auto;
-      border-right: none;
-      border-bottom: 1px solid $black;
-    }
-
-    .logo {
-      font-weight: bold;
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-
-    .menu {
-      .item {
-        &:not(:first-child) {
-          margin-top: 5px;
-        }
-
-        .link {
-          @include link;
-        }
-      }
-    }
+  &:active {
+    transform: translateY(0) scale(0.99);
   }
 
-  .content {
-    height: 100%;
-    overflow: auto;
-    flex: 1 1 100%;
-    padding: 20px 30px;
-    @include media($breakpoint) {
-      overflow: visible;
-      flex: 0 0 auto;
-      height: auto;
-    }
+  &:focus-visible {
+    outline: 2px solid rgba(9, 55, 63, 0.25);
+    outline-offset: 2px;
   }
+}
+
+/* ====== CONTENT (зона, где рендерится Outlet) ====== */
+
+.content {
+  flex: 1 1 auto;
+  padding: 8px;
+
+  /* Важно: ограничиваем ширину, чтобы “сетка товаров” выглядела как маркетплейс */
+  > * {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+}
+
+/* ====== СТИЛИЗУЕМ AllProducts и ViewProductPage НЕ ТРОГАЯ JSX ======
+   (да, тут будут !important, потому что inline styles) */
+
+/* Контейнер страницы: у тебя <div style={{ padding: '20px' }}> */
+.content > div {
+  padding: 0 !important; /* перебиваем inline padding */
+}
+
+/* Заголовки на странице (Swap Hub, Все товары) */
+.content h1 {
+  margin: 8px 0 14px !important;
+  font-size: 40px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.6px !important;
+  color: $text !important;
+}
+
+.content h2 {
+  margin: 0 0 12px !important;
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  color: $textSoft !important;
+}
+
+/* В AllProducts второй div — это grid-контейнер со списком ссылок (карточек) */
+.content > div > div {
+  display: grid !important; /* оставляем grid */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+  gap: 18px !important;
+  margin-top: 18px !important;
+}
+
+/* Карточка товара = <Link style={{ ... }}> */
+.content a {
+  /* перебиваем inline */
+  text-decoration: none !important;
+  color: $text !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  border-radius: 26px !important;
+  background: rgba(255, 255, 255, 0.18) !important;
+  padding: 14px !important;
+
+  /* стекло */
+  backdrop-filter: blur(18px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(160%) !important;
+
+  box-shadow:
+    0 16px 45px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
+
+  display: grid !important;
+  gap: 10px !important;
+
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease !important;
+}
+
+/* Hover карточки */
+.content a:hover {
+  transform: translateY(-2px) !important;
+  background: rgba(255, 255, 255, 0.26) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Заголовок товара внутри карточки */
+.content a h2 {
+  margin: 0 !important;
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  color: $text !important;
+}
+
+/* Описание и цена */
+.content a p {
+  margin: 0 !important;
+  color: $textSoft !important;
+  line-height: 1.35 !important;
+}
+
+/* Картинка товара — у тебя width={80}, перебиваем стилями */
+.content a img {
+  width: 100% !important;
+  height: 140px !important;
+  max-width: 100% !important;
+
+  object-fit: cover !important;
+  border-radius: 18px !important;
+
+  background: rgba(0, 0, 0, 0.06) !important;
+}
+
+/* ====== ViewProductPage (тоже с inline padding) ====== */
+.content > div img {
+  /* на странице товара картинка тоже станет “нормального” размера */
+  width: min(520px, 100%) !important;
+  height: 320px !important;
+  object-fit: cover !important;
+  border-radius: 26px !important;
+  margin: 14px 0 !important;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.12) !important;
 }

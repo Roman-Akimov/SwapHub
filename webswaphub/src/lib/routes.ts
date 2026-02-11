@@ -20,6 +20,11 @@ export const getAllProductsPage = () => {
   return '/';
 };
 
+/** Route для страницы CreateProductForm */
+export const getNewProductRoute = () => {
+  return '/products/new'
+};
+
 // export const viewProductRouteParams = { productName: ':productName' };
 // export type ViewProductRouteParams = { productName: string };
 
