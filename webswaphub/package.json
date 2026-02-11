@@ -10,7 +10,8 @@
     "types": "tsc --noEmit --project ./tsconfig.json && tsc --noEmit --project ./tsconfig.node.json && tsc --noEmit --project ./tsconfig.app.json",
     "prettify": "prettier --log-level warn --cache --write \"src/**/*.{ts,tsx,js,json,yml,scss}\" \"*.{ts,tsx,js,json,yml,scss}\" --ignore-path .gitignore",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/.eslintcache --ext .ts,.tsx .",
-    "stylelint": "stylelint --cache --cache-location ./node_modules/.cache/.stylelintcache src/**/*.scss"
+    "stylelint": "stylelint --cache --cache-location ./node_modules/.cache/.stylelintcache src/**/*.scss",
+    "stylecheck": "sass --update -q ./src:./node_modules/.cache/.stylecheckcache"
   },
   "dependencies": {
     "@swaphub/backend": "workspace:*",
