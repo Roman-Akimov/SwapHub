@@ -15,6 +15,7 @@ export const CreateProductForm = () => {
   const [state, setState] = useState<FormState>(initialState);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [errors, setErrors] = useState<FormError>({});
+  const [successMessageVisible, setSuccessMessageVisible] = useState(false);
 
   const createProduct = trpc.createProduct.useMutation();
   const isSubmitting = createProduct.isPending;
@@ -133,6 +134,11 @@ export const CreateProductForm = () => {
     } catch {
       // Ошибка уже доступна в createProduct.error и показывается в UI *
     }
+
+    setSuccessMessageVisible(true);
+    setTimeout(() => {
+      setSuccessMessageVisible(false);
+    }, 3000);
   };
 
   React.useEffect(() => {
@@ -240,6 +246,9 @@ export const CreateProductForm = () => {
             {isSubmitting ? 'Отправка...' : 'Выставить товар'}
           </button>
           {createProduct.error && <div style={{ color: 'red' }}>{createProduct.error.message}</div>}
+          {successMessageVisible && (
+            <div style={{ color: 'green' }}>Товар успешно выставлен на площадку! Поздравляем!</div>
+          )}
         </form>
       </div>
     </div>
