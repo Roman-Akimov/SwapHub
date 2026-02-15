@@ -2,5 +2,94 @@
 @use '../../styles/mixins' as m;
 
 .title {
-  @include m.h1;
+  font-size: 40px;
+  line-height: 1.1;
+  margin: 0 0 18px;
+}
+
+.imageRow {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.imagePreview {
+  width: 220px;
+  height: 220px;
+  border: 2px solid #222;
+  border-radius: 6px;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.imagePlaceholder {
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+  padding: 10px;
+}
+
+.imageControls {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.fileLabel {
+  border: 2px solid #222;
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  user-select: none;
+  background: #fff;
+  width: fit-content;
+
+  transition:
+    transform 0.06s ease,
+    background 0.15s ease;
+}
+
+.fileLabel:hover {
+  background: #f6f6f6;
+}
+
+.fileLabel:active {
+  transform: translateY(1px);
+}
+
+.fileInput {
+  display: none;
+}
+
+.secondaryButton {
+  border: 2px solid #222;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  width: fit-content;
+
+  transition:
+    transform 0.06s ease,
+    background 0.15s ease;
+}
+
+.secondaryButton:hover {
+  background: #f6f6f6;
+}
+
+.secondaryButton:active {
+  transform: translateY(1px);
 }
