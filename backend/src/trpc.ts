@@ -1,5 +1,6 @@
 import { initTRPC, TRPCError } from '@trpc/server';
-import { generateProducts, Product } from './lib/mock/products';
+import { generateProducts } from './lib/mock/products';
+import type { Product } from './lib/mock/products';
 import { z } from 'zod';
 
 // const products = [
