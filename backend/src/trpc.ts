@@ -1,8 +1,3 @@
-import { initTRPC, TRPCError } from '@trpc/server';
-import { generateProducts } from './lib/mock/products';
-import type { Product } from './lib/mock/products';
-import { z } from 'zod';
-
 // const products = [
 //   {
 //     id: 1,
@@ -31,53 +26,7 @@ import { z } from 'zod';
 //   },
 // ];
 
-const app = initTRPC.create();
-let products: Product[] = generateProducts(30);
+export { appRouter } from './lib/router/router';
+export type { AppRouter } from './lib/router/router';
 
-export const CreateProductInputSchema = z
-  .object({
-    name: z.string().trim().min(2),
-    description: z.string().trim().min(15),
-    currency: z.enum(['RUB', 'USD']),
-    price: z.coerce.number().finite().positive(),
-    image: z.string().url(),
-  })
-  .strict();
-
-export const GetProductByIdInputSchema = z
-  .object({
-    productId: z.coerce.number().int().positive(),
-  })
-  .strict();
-
-export const appRouter = app.router({
-  getProducts: app.procedure.query(() => {
-    return { products };
-  }),
-  getProduct: app.procedure.input(GetProductByIdInputSchema).query(({ input }) => {
-    const product = products.find((p) => {
-      return p.id === input.productId;
-    });
-
-    if (!product) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: `Товар с id=${input.productId} не найден`,
-      });
-    }
-    return { product };
-  }),
-
-  createProduct: app.procedure.input(CreateProductInputSchema).mutation(({ input }) => {
-    const newProduct = {
-      id: products.length ? products[products.length - 1].id + 1 : 1,
-      ...input,
-    };
-
-    products = [...products, newProduct];
-
-    return { product: newProduct };
-  }),
-});
-
-export type AppRouter = typeof appRouter;
+export { CreateProductInputSchema, GetProductByIdInputSchema } from './lib/schemas/productSchemas';
