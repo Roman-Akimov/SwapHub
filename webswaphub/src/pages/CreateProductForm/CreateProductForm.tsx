@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import css from './CreateProductForm.module.scss';
 import type { FormError, FormState } from './FormState';
+import { queryClient, trpc } from '../../lib/trpc';
 
 const initialState: FormState = {
   name: '',
@@ -8,26 +9,31 @@ const initialState: FormState = {
   description: '',
   price: '',
   currency: 'RUB',
-}
+};
 
 export const CreateProductForm = () => {
   const [state, setState] = useState<FormState>(initialState);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [errors, setErrors] = useState<FormError>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const createProduct = trpc.createProduct.useMutation();
+  const isSubmitting = createProduct.isPending;
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Временная заглушка
+  const fallbackImageUrl =
+    'https://avatars.mds.yandex.net/i?id=7165e767da4f62e966db16f3cd9ae01c568d1fbe-5266118-images-thumbs&n=13';
 
   const resetForm = () => {
     // Сброс в начальное состояние
     setState(initialState);
-    setErrors({})
-    setPreviewUrl(null)
-    if (fileInputRef.current){
-      fileInputRef.current.value = ''
+    setErrors({});
+    setPreviewUrl(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
-
-  }
+  };
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> = (e) => {
     const { name, value } = e.currentTarget;
@@ -109,26 +115,23 @@ export const CreateProductForm = () => {
 
     const nextErrors = validate(state);
     setErrors(nextErrors);
-
-    const hasErrors = Object.keys(nextErrors).length > 0;
-
-    if (hasErrors) {
+    if (Object.keys(nextErrors).length > 0) {
       return;
     }
 
-    setIsSubmitting(true);
-
     try {
-      await new Promise((resolve) => {
-        return setTimeout(resolve, 3000)
+      await createProduct.mutateAsync({
+        name: state.name,
+        description: state.description,
+        currency: state.currency as 'RUB' | 'USD',
+        price: state.price,
+        image: fallbackImageUrl,
       });
-      // eslint-disable-next-line no-console
-      console.info('Submit OK:', state);
-      resetForm()
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } finally {
-      setIsSubmitting(false);
+      resetForm();
+      await queryClient.invalidateQueries();
+    } catch {
+      // Ошибка уже доступна в createProduct.error и показывается в UI *
     }
   };
 
@@ -174,7 +177,13 @@ export const CreateProductForm = () => {
             <div className={css.imageControls}>
               <label className={css.fileLabel}>
                 Добавьте изображение
-                <input className={css.fileInput} ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} />
+                <input
+                  className={css.fileInput}
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
               </label>
 
               <button
@@ -227,7 +236,10 @@ export const CreateProductForm = () => {
             {errors.currency && <div style={{ color: 'red' }}>{errors.currency}</div>}
           </div>
 
-          <button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Отправка...' : 'Выставить товар'}</button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Отправка...' : 'Выставить товар'}
+          </button>
+          {createProduct.error && <div style={{ color: 'red' }}>{createProduct.error.message}</div>}
         </form>
       </div>
     </div>

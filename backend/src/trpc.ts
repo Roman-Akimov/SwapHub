@@ -1,5 +1,5 @@
 import { initTRPC, TRPCError } from '@trpc/server';
-import { generateProducts } from './lib/mock/products';
+import { generateProducts, Product } from './lib/mock/products';
 import { z } from 'zod';
 
 // const products = [
@@ -31,7 +31,17 @@ import { z } from 'zod';
 // ];
 
 const app = initTRPC.create();
-const products = generateProducts(30);
+let products: Product[] = generateProducts(30);
+
+export const CreateProductInputSchema = z
+  .object({
+    name: z.string().trim().min(2),
+    description: z.string().trim().min(15),
+    currency: z.enum(['RUB', 'USD']),
+    price: z.coerce.number().finite().positive(),
+    image: z.string().url(),
+  })
+  .strict();
 
 export const GetProductByIdInputSchema = z
   .object({
@@ -55,6 +65,17 @@ export const appRouter = app.router({
       });
     }
     return { product };
+  }),
+
+  createProduct: app.procedure.input(CreateProductInputSchema).mutation(({ input }) => {
+    const newProduct = {
+      id: products.length ? products[products.length - 1].id + 1 : 1,
+      ...input,
+    };
+
+    products = [...products, newProduct];
+
+    return { product: newProduct };
   }),
 });
 
