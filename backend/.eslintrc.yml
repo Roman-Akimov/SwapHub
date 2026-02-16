@@ -10,8 +10,6 @@ parserOptions:
 
 rules:
   no-console: off
-
-rules:
   '@typescript-eslint/no-restricted-imports':
     - error
     - patterns:
