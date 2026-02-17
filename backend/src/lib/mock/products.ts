@@ -8,7 +8,7 @@ export type Product = {
   price: number;
   currency: string;
   image: string;
-  description: string;
+  description: string
 };
 
 const MODELS = ['Iphone 10', 'Iphone 15', 'Iphone 18', 'Iphone 12', 'Iphone 14 Pro'];

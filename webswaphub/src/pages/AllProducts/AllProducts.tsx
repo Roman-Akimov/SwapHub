@@ -42,7 +42,7 @@ export const AllProducts = () => {
                 <p>
                   Price: {product.price} {product.currency}
                 </p>
-                {product.image && <img src={product.image} alt={product.name} width={80} />}
+                {product.imageFile && <img src={product.imageFile} alt={product.name} width={80} />}
                 <p>{product.description}</p>
               </div>
             </Link>
