@@ -12,6 +12,6 @@ export const CreateProductInputSchema = z
 
 export const GetProductByIdInputSchema = z
   .object({
-    productId: z.coerce.number().int().positive(),
+    productId: z.string().trim().min(2),
   })
   .strict();
