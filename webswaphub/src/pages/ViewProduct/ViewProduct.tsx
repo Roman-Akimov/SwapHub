@@ -32,7 +32,7 @@ export const ViewProductPage = () => {
       <p>
         Цена: {product.price} {product.currency}
       </p>
-      <img src={product.image} alt={product.name} width={80} />
+      <img src={product.imageFile} alt={product.name} width={80} />
       <p>{product.description}</p>
     </div>
   );
