@@ -1,6 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { type ViewProductRouteParams } from '../../lib/routes';
 import { trpc } from '../../lib/trpc';
+import css from './ViewProduct.module.scss'
+import { format } from 'date-fns';
 
 export const ViewProductPage = () => {
   const { productId } = useParams() as ViewProductRouteParams;
@@ -29,6 +31,7 @@ export const ViewProductPage = () => {
   return (
     <div style={{ padding: 20 }}>
       <h1>{product.name}</h1>
+      <div className={css.createdAt}>Выставлен: {format(new Date(data.product.createdAt), 'dd.MM.yyyy')}</div>
       <p>
         Цена: {product.price} {product.currency}
       </p>

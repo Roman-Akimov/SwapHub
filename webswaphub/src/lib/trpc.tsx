@@ -1,6 +1,7 @@
 import type { AppRouter } from '@swaphub/backend/src/trpc';
 import { QueryClient } from '@tanstack/react-query';
 import { createTRPCReact, httpBatchLink } from '@trpc/react-query';
+import superjson from 'superjson';
 
 export const trpc = createTRPCReact<AppRouter>();
 
@@ -24,6 +25,7 @@ export const trpcClient = trpc.createClient({
     httpBatchLink({
       // Это link, который отправляет запросы по HTTP на указанный URL /trpc
       url: 'http://localhost:3000/trpc',
+      transformer: superjson,
     }),
   ],
 });

@@ -16,6 +16,7 @@ model Product {
     name        String   @db.VarChar(120)
     description String   @db.VarChar(2000)
     imageFile   String   @db.VarChar(2048)
-    price       Decimal  @db.Decimal(12, 2)
+    price       Int
     currency    Currency
+    createdAt   DateTime @default(now())
 }

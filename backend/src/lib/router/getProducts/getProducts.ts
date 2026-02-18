@@ -8,8 +8,13 @@ export const getProductsTrpcRoute = app.procedure.query(async ({ ctx }) => {
       description: true,
       price: true,
       currency: true,
-      imageFile: true
+      imageFile: true,
+      createdAt: true
+    },
+    orderBy: {
+      createdAt: 'desc'
     }
   });
+
   return {products};
 });
