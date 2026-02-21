@@ -26,6 +26,8 @@ model User {
     lastName  String
     nickName  String   @unique
     role      UserRole @default(USER)
+
+    sessions Session[]
 }
 
 model Product {
@@ -36,4 +38,19 @@ model Product {
     price       Int
     currency    Currency
     createdAt   DateTime @default(now())
+}
+
+model Session {
+    id        String   @id @default(uuid())
+    token     String   @unique
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    createdAt DateTime @default(now())
+    expiresAt DateTime
+    userAgent String? // Информация о браузере/устройстве
+    ipAddress String? // IP адрес для безопасности
+
+    @@index([token])
+    @@index([userId])
+    @@index([expiresAt])
 }

@@ -1,5 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
-import { getAllProductsPage, getNewProductRoute } from '../../lib/routes';
+import { getAllProductsPage, getNewProductRoute, getSignInRoute, getSignUpRoute } from '../../lib/routes';
 import css from './Layout.module.scss';
 
 export const Layout = () => {
@@ -18,6 +18,16 @@ export const Layout = () => {
             <li className={css.item}>
               <Link className={css.link} to={getNewProductRoute()}>
                 Выставить товар
+              </Link>
+            </li>
+            <li className={css.item}>
+              <Link className={css.link} to={getSignUpRoute()}>
+                Регистрация
+              </Link>
+            </li>
+            <li className={css.item}>
+              <Link className={css.link} to={getSignInRoute()}>
+                Вход
               </Link>
             </li>
           </ul>

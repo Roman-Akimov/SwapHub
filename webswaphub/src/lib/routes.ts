@@ -22,8 +22,16 @@ export const getAllProductsPage = () => {
 
 /** Route для страницы CreateProductForm */
 export const getNewProductRoute = () => {
-  return '/products/new'
+  return '/products/new';
 };
+
+export const getSignUpRoute = () => {
+  return '/sign-up';
+};
+
+export const getSignInRoute = () => {
+  return '/sign-in'
+}
 
 // export const viewProductRouteParams = { productName: ':productName' };
 // export type ViewProductRouteParams = { productName: string };

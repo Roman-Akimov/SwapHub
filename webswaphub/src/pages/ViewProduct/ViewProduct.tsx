@@ -5,33 +5,47 @@ import css from './ViewProduct.module.scss'
 import { format } from 'date-fns';
 
 export const ViewProductPage = () => {
-  const { productId } = useParams() as ViewProductRouteParams;
+  const { productId: rawProductId } = useParams() as ViewProductRouteParams;
+  
+  // Очищаем ID от возможных пробелов и спецсимволов
+  const productId = rawProductId?.trim();
 
-  const { data, isLoading, isError, error } = trpc.getProduct.useQuery({ productId }, { enabled: !!productId });
+  const { data, isLoading, isError, error } = trpc.getProduct.useQuery(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    { productId: productId! }, 
+    { enabled: !!productId }
+  );
 
   if (isLoading) {
     return <div>Загрузка...</div>;
   }
+
   if (isError) {
     if (error.data?.code === 'BAD_REQUEST') {
-      // Если productId не число
-      return <div>Неправильно заданный id</div>;
+      return <div>Неправильный формат ID товара</div>;
     }
     if (error.data?.code === 'NOT_FOUND') {
       return <div>Продукт не найден</div>;
     }
-    return <div>ЧТо-то пошло не так: {error.message}</div>;
-  }
-  if (!data?.product) {
-    return <div>Извините, продукт не найден..</div>;
+    return <div>Что-то пошло не так: {error.message}</div>;
   }
 
-  const { product } = data;
+  if (!data) {
+    return <div>Нет данных</div>;
+  }
+
+  const product = data.product || data;
+
+  if (!product) {
+    return <div>Извините, продукт не найден..</div>;
+  }
 
   return (
     <div style={{ padding: 20 }}>
       <h1>{product.name}</h1>
-      <div className={css.createdAt}>Выставлен: {format(new Date(data.product.createdAt), 'dd.MM.yyyy')}</div>
+      <div className={css.createdAt}>
+        Выставлен: {format(new Date(product.createdAt), 'dd.MM.yyyy')}
+      </div>
       <p>
         Цена: {product.price} {product.currency}
       </p>
