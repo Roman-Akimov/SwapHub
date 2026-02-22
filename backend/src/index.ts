@@ -5,9 +5,8 @@ import * as trpcExpress from '@trpc/server/adapters/express';
 import { appRouter } from './trpc';
 import cors from 'cors';
 import { AppContext, createAppContext } from './lib/ctx';
-
-console.log('DATABASE_URL:', process.env.DATABASE_URL ? '✅ установлен' : '❌ НЕ установлен');
-console.log('DATABASE_URL starts with:', process.env.DATABASE_URL?.substring(0, 30));
+import { applyPassportToExpressApp } from './lib/passport';
+import { createTrpcContext } from './lib/trpc/trpc';
 
 void (async () => {
   let ctx: AppContext | null = null;
@@ -19,13 +18,15 @@ void (async () => {
       res.send('pong');
     });
 
+    applyPassportToExpressApp(expressApp, ctx);
+
+    const trpcContext = createTrpcContext(ctx);
+
     expressApp.use(
       '/trpc',
       trpcExpress.createExpressMiddleware({
         router: appRouter,
-        createContext: () => {
-          return ctx!;
-        },
+        createContext: trpcContext,
       })
     );
 

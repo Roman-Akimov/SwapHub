@@ -8,6 +8,9 @@ import { trpc } from '../../lib/trpc';
 import { zSignUpTrpcInput } from '@swaphub/backend/src/lib/router/signUp/signUp';
 import { withZodSchema } from 'formik-validator-zod';
 import { z } from 'zod';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+import { getAllProductsRoute } from '../../lib/routes';
 
 // Тип для значений формы
 type FormValues = {
@@ -20,7 +23,8 @@ type FormValues = {
 };
 
 export const SignUp = () => {
-  const [successMessageVisible, setSuccessMessageVisible] = useState(false);
+  const navigate = useNavigate();
+  const trpcUtils = trpc.useContext();
   const [submittingError, setSubmittingError] = useState<string | null>(null);
   const signUp = trpc.signUp.useMutation();
 
@@ -51,12 +55,10 @@ export const SignUp = () => {
     onSubmit: async (values) => {
       try {
         setSubmittingError(null);
-        await signUp.mutateAsync(values);
-        formik.resetForm();
-        setSuccessMessageVisible(true);
-        setTimeout(() => {
-          setSuccessMessageVisible(false);
-        }, 3000);
+        const { token } = await signUp.mutateAsync(values);
+        Cookies.set('token', token, { expires: 9999 });
+        void trpcUtils.invalidate();
+        navigate(getAllProductsRoute());
       } catch (err) {
         setSubmittingError(err instanceof Error ? err.message : 'Unknown error');
       }
@@ -73,13 +75,8 @@ export const SignUp = () => {
         <Input label="Фамилия" name="lastName" formik={formik} />
         <Input label="Пароль" name="password" type="password" formik={formik} />
         <Input label="Повторите пароль" name="passwordAgain" type="password" formik={formik} />
-
         {!formik.isValid && !!formik.submitCount && <Alert color="red">Пожалуйста, заполните корректно все поля</Alert>}
-
         {submittingError && <Alert color="red">{submittingError}</Alert>}
-
-        {successMessageVisible && <Alert color="green">Благодарим за регистрацию!</Alert>}
-
         <Button loading={formik.isSubmitting}>Зарегистрироваться</Button>
       </FormItems>
     </form>

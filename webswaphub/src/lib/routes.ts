@@ -16,7 +16,7 @@ export const getViewProductPage = ({ productId }: ViewProductRouteParams) => {
   return `/products/${productId}`;
 };
 
-export const getAllProductsPage = () => {
+export const getAllProductsRoute = () => {
   return '/';
 };
 
@@ -30,9 +30,12 @@ export const getSignUpRoute = () => {
 };
 
 export const getSignInRoute = () => {
-  return '/sign-in'
-}
+  return '/sign-in';
+};
 
+export const getSignOutRoute = () => {
+  return '/sign-out';
+};
 // export const viewProductRouteParams = { productName: ':productName' };
 // export type ViewProductRouteParams = { productName: string };
 

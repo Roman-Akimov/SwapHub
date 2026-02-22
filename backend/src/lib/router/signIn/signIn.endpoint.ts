@@ -1,4 +1,5 @@
 import { getPasswordHash } from '../../../utils/getPasswordHash';
+import { signJWT } from '../../../utils/signJWT';
 import { app } from '../../trpc/trpc';
 import { zSignInTrpcInput } from './signIn';
 
@@ -14,5 +15,7 @@ export const signInTrpcRoute = app.procedure.input(zSignInTrpcInput).mutation(as
     throw new Error('Неверный email или пароль');
   }
 
-  return true;
+  const token = signJWT(user.id);
+
+  return { token };
 });

@@ -7,6 +7,9 @@ import { FormItems } from '../../components/FormItems/FormItems';
 import { Input } from '../../components/Input/Input';
 import { Alert } from '../../components/Alert/Alert';
 import { Button } from '../../components/Button/Button';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+import { getAllProductsRoute } from '../../lib/routes';
 
 type FormValues = {
   email: string;
@@ -14,7 +17,8 @@ type FormValues = {
 };
 
 export const SignIn = () => {
-  const [successMessageVisible, setSuccessMessageVisible] = useState(false);
+  const navigate = useNavigate();
+  const trpcUtils = trpc.useUtils();
   const [submittingError, setSubmittingError] = useState<string | null>(null);
   const signIn = trpc.signIn.useMutation();
 
@@ -29,12 +33,10 @@ export const SignIn = () => {
     onSubmit: async (values) => {
       try {
         setSubmittingError(null);
-        await signIn.mutateAsync(values);
-        formik.resetForm();
-        setSuccessMessageVisible(true);
-        setTimeout(() => {
-          setSuccessMessageVisible(false);
-        }, 3000);
+        const { token } = await signIn.mutateAsync(values);
+        Cookies.set('token', token, { expires: 9999 });
+        await trpcUtils.getMe.invalidate();
+        navigate(getAllProductsRoute());
       } catch (err) {
         setSubmittingError(err instanceof Error ? err.message : 'Unknown error');
       }
@@ -50,7 +52,6 @@ export const SignIn = () => {
           <Input label="Пароль" name="password" type="password" formik={formik} />
           {!formik.isValid && !!formik.submitCount && <Alert color="red">Что-то пошло не так..</Alert>}
           {submittingError && <Alert color="red">{submittingError}</Alert>}
-          {successMessageVisible && <Alert color="green">С возвращением!</Alert>}
           <Button loading={formik.isSubmitting}>Войти</Button>
         </FormItems>
       </form>

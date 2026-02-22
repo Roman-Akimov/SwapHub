@@ -2,6 +2,7 @@ import { TRPCError } from '@trpc/server';
 import { app } from '../../trpc/trpc';
 import { zSignUpTrpcInput } from './signUp';
 import crypto from 'crypto';
+import { signJWT } from '../../../utils/signJWT';
 
 export const signUpTrpcRoute = app.procedure.input(zSignUpTrpcInput).mutation(async ({ ctx, input }) => {
   const exUser = await ctx.prisma.user.findFirst({
@@ -25,7 +26,7 @@ export const signUpTrpcRoute = app.procedure.input(zSignUpTrpcInput).mutation(as
     }
   }
 
-  await ctx.prisma.user.create({
+  const user = await ctx.prisma.user.create({
     data: {
       email: input.email,
       nickName: input.nickName,
@@ -35,5 +36,7 @@ export const signUpTrpcRoute = app.procedure.input(zSignUpTrpcInput).mutation(as
     },
   });
 
-  return true;
+  const token = signJWT(user.id);
+
+  return { token };
 });
