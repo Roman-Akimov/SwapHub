@@ -3,6 +3,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { createTRPCReact, httpBatchLink } from '@trpc/react-query';
 import superjson from 'superjson';
 import Cookies from 'js-cookie';
+import { env } from './env';
 
 export const trpc = createTRPCReact<AppRouter>();
 
@@ -25,7 +26,7 @@ export const trpcClient = trpc.createClient({
     // links в trpc - это аналог middleware
     httpBatchLink({
       // Это link, который отправляет запросы по HTTP на указанный URL /trpc
-      url: 'http://localhost:3000/trpc',
+      url: env.VITE_BACKEND_TRPC_URL,
       transformer: superjson,
       headers: () => {
         const token = Cookies.get('token');

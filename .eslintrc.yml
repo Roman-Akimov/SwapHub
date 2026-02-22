@@ -3,6 +3,7 @@ root: true
 env:
   es2021: true
   node: true
+  browser: true
 
 parser: '@typescript-eslint/parser'
 
@@ -45,6 +46,11 @@ rules:
     - error
     - assertionStyle: as
       objectLiteralTypeAssertions: never
+
+  no-restricted-syntax:
+    - error
+    - selector: '[object.type=MetaProperty][property.name=env]'
+      message: Use instead import { env } from "lib/env"
 
 ignorePatterns:
   - node_modules

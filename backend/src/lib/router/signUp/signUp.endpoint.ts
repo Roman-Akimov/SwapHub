@@ -3,6 +3,7 @@ import { app } from '../../trpc/trpc';
 import { zSignUpTrpcInput } from './signUp';
 import crypto from 'crypto';
 import { signJWT } from '../../../utils/signJWT';
+import { env } from '../../env';
 
 export const signUpTrpcRoute = app.procedure.input(zSignUpTrpcInput).mutation(async ({ ctx, input }) => {
   const exUser = await ctx.prisma.user.findFirst({
@@ -30,7 +31,7 @@ export const signUpTrpcRoute = app.procedure.input(zSignUpTrpcInput).mutation(as
     data: {
       email: input.email,
       nickName: input.nickName,
-      password: crypto.createHash('sha256').update(input.password).digest('hex'),
+      password: crypto.createHash('sha256').update(`${env.PASSWORD_SALT}${input.password}`).digest('hex'),
       firstName: input.firstName,
       lastName: input.lastName,
     },

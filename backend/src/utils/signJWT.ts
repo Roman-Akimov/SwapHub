@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken';
-
-const JWT_SECRET = 'not-really-secret-jwt-key';
+import { env } from '../lib/env';
 
 export const signJWT = (userId: string): string => {
   const payload = { userId };
-  return jwt.sign(payload, JWT_SECRET);
+  return jwt.sign(payload, env.JWT_SECRET);
 };
