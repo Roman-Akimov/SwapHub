@@ -18,14 +18,15 @@ enum UserRole {
 }
 
 model User {
-    id        String   @id @default(uuid())
-    email     String   @unique
+    id        String    @id @default(uuid())
+    email     String    @unique
     password  String
-    createdAt DateTime @default(now())
+    createdAt DateTime  @default(now())
     firstName String
     lastName  String
-    nickName  String   @unique
-    role      UserRole @default(USER)
+    nickName  String    @unique
+    role      UserRole  @default(USER)
+    products  Product[]
 
     sessions Session[]
 }
@@ -38,6 +39,8 @@ model Product {
     price       Int
     currency    Currency
     createdAt   DateTime @default(now())
+    ownerId     String
+    owner       User     @relation(fields: [ownerId], references: [id])
 }
 
 model Session {

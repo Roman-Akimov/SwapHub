@@ -11,6 +11,14 @@
   margin-bottom: 20px;
 }
 
-.createdAt{
+.createdAt {
   color: gray;
+}
+
+.owner {
+  text-align: center;
+  display: flex;
+  border: 2px solid rgb(147, 177, 147);
+  border-radius: 20px;
+  float: left;
 }

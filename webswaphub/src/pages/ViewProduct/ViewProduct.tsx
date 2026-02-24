@@ -51,6 +51,7 @@ export const ViewProductPage = () => {
       </p>
       <img src={product.imageFile} alt={product.name} width={80} />
       <p>{product.description}</p>
+      <div className={css.owner}>Владелец: {data.product.owner.nickName}<br />{data.product.owner.firstName} {data.product.owner.lastName}</div>
     </div>
   );
 };

@@ -7,6 +7,16 @@ export const getProductTrpcRoute = app.procedure.input(GetProductByIdInputSchema
     where: {
       id: input.productId,
     },
+    include: {
+      owner: {
+        select: {
+          id: true,
+          nickName: true,
+          firstName: true,
+          lastName: true,
+        },
+      },
+    },
   });
 
   if (!product) {
