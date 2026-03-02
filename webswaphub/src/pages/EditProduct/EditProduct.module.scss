@@ -1,0 +1,178 @@
+.container {
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.field {
+  margin-bottom: 25px;
+}
+
+.label {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.previewSection {
+  margin-bottom: 25px;
+}
+
+.previewTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.previewContainer {
+  margin-top: 10px;
+}
+
+.previewImage {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  color: #666;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 5px 0;
+
+  &:hover {
+    color: #333;
+  }
+}
+
+.noImage {
+  color: #999;
+  font-style: italic;
+  padding: 10px 0;
+}
+
+.descriptionLabel {
+  color: #666;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+}
+
+.priceRow {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.priceField {
+  flex: 2;
+}
+
+.currencyField {
+  flex: 1;
+}
+
+.currencySelect {
+  position: relative;
+
+  &:after {
+    content: '▼';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 12px;
+    pointer-events: none;
+  }
+}
+
+.select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  font-size: 14px;
+  appearance: none;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+}
+
+.invalid {
+  border-color: red;
+
+  &:focus {
+    border-color: red;
+  }
+}
+
+.error {
+  color: red;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.submitContainer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.cancelButton {
+  padding: 8px 16px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+
+  &:hover {
+    background: #e0e0e0;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.loading {
+  display: block;
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #666;
+}

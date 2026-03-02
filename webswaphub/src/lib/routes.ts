@@ -8,14 +8,6 @@ const getRouteParams = <T extends Record<string, boolean>>(object: T) => {
   ) as Record<keyof T, string>;
 };
 
-export const viewProductRouteParams = getRouteParams({ productId: true });
-
-export type ViewProductRouteParams = typeof viewProductRouteParams;
-
-export const getViewProductPage = ({ productId }: ViewProductRouteParams) => {
-  return `/products/${productId}`;
-};
-
 export const getAllProductsRoute = () => {
   return '/';
 };
@@ -36,6 +28,21 @@ export const getSignInRoute = () => {
 export const getSignOutRoute = () => {
   return '/sign-out';
 };
+
+export const viewProductRouteParams = getRouteParams({ productId: true });
+
+export type ViewProductRouteParams = typeof viewProductRouteParams;
+
+export const getViewProductPage = ({ productId }: ViewProductRouteParams) => {
+  return `/products/${productId}`;
+};
+
+export const editProductRouteParams = getRouteParams({ productId: true });
+export type EditProductRouteParams = typeof viewProductRouteParams;
+export const getEditProductPage = ({ productId }: EditProductRouteParams) => {
+  return `/products/${productId}/edit`;
+};
+
 // export const viewProductRouteParams = { productName: ':productName' };
 // export type ViewProductRouteParams = { productName: string };
 

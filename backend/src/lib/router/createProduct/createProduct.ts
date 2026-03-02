@@ -7,6 +7,9 @@ import { app } from '../../trpc/trpc';
 // export let products: Product[] = generateProducts(30);
 
 export const createProductTrpcRoute = app.procedure.input(CreateProductInputSchema).mutation(async ({ input, ctx }) => {
+  if (!ctx.me) {
+    throw Error('Not authoricated!');
+  }
   try {
     const newProduct = await ctx.prisma.product.create({
       data: {
@@ -15,6 +18,7 @@ export const createProductTrpcRoute = app.procedure.input(CreateProductInputSche
         imageFile: input.image,
         price: input.price,
         currency: input.currency,
+        ownerId: ctx.me.id, // можно написать через author и connect
       },
     });
     return { product: newProduct };

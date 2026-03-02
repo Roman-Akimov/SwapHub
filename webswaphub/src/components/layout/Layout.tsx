@@ -65,11 +65,7 @@ export const Layout = () => {
                 )}
               </>
             )}
-            {isAuthLoading && (
-              <li className={css.item}>
-                <span className={css.loading}>Загрузка...</span>
-              </li>
-            )}
+            {isAuthLoading}
           </ul>
         </nav>
       </header>
