@@ -2,27 +2,24 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getViewProductPage, type EditProductRouteParams } from '../../lib/routes';
 import { trpc } from '../../lib/trpc';
 import type { AppRouterOutput } from '@swaphub/backend/src/lib/router/router';
-import { useState } from 'react';
-import { useFormik } from 'formik';
 import { zUpdateProductTrpcInput } from '@swaphub/backend/src/lib/router/updateProduct/updateProduct';
-import { toFormikValidationSchema } from 'zod-formik-adapter';
-
 import css from './EditProduct.module.scss';
 import { FormItems } from '../../components/FormItems/FormItems';
 import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
 import { Alert } from '../../components/Alert/Alert';
+import { useForm } from '../../lib/form';
 
 const EditProductComponent: React.FC<{ product: NonNullable<AppRouterOutput['getProduct']['product']> }> = ({
   product,
 }) => {
   const navigate = useNavigate();
-  const [submittingError, setSubmittingError] = useState<string | null>(null);
   const updateProduct = trpc.updateProduct.useMutation();
 
   const formSchema = zUpdateProductTrpcInput.omit({ productId: true });
 
-  const formik = useFormik({
+  // Используем наш хук
+  const { formik, alertProps, buttonProps } = useForm({
     initialValues: {
       name: product.name,
       description: product.description,
@@ -30,28 +27,23 @@ const EditProductComponent: React.FC<{ product: NonNullable<AppRouterOutput['get
       price: product.price,
       currency: product.currency,
     },
-    validationSchema: toFormikValidationSchema(formSchema),
+    validationSchema: formSchema,
+    successMessage: 'Товар успешно обновлен!',
     onSubmit: async (values) => {
-      try {
-        setSubmittingError(null);
+      const success = await updateProduct.mutateAsync({
+        productId: product.id,
+        name: values.name,
+        description: values.description,
+        image: values.image,
+        price: values.price,
+        currency: values.currency,
+      });
 
-        const success = await updateProduct.mutateAsync({
-          productId: product.id,
-          name: values.name,
-          description: values.description,
-          image: values.image,
-          price: values.price,
-          currency: values.currency,
-        });
-
-        if (success) {
-          navigate(getViewProductPage({ productId: product.id }));
-        } else {
-          setSubmittingError('Не удалось обновить товар');
-        }
-      } catch (error) {
-        setSubmittingError(error instanceof Error ? error.message : 'Неизвестная ошибка');
+      if (!success) {
+        throw new Error('Не удалось обновить товар');
       }
+
+      navigate(getViewProductPage({ productId: product.id }));
     },
   });
 
@@ -67,7 +59,7 @@ const EditProductComponent: React.FC<{ product: NonNullable<AppRouterOutput['get
             <Input name="name" label="" formik={formik} />
           </div>
 
-          {/* Превью изображения - как в окне создания */}
+          {/* Превью изображения */}
           <div className={css.previewSection}>
             <div className={css.previewTitle}>Превью изображения</div>
             {formik.values.image ? (
@@ -110,7 +102,7 @@ const EditProductComponent: React.FC<{ product: NonNullable<AppRouterOutput['get
             )}
           </div>
 
-          {/* Цена и валюта в одной строке как в окне создания */}
+          {/* Цена и валюта */}
           <div className={css.priceRow}>
             <div className={css.priceField}>
               <div className={css.label}>Укажите цену:</div>
@@ -136,12 +128,12 @@ const EditProductComponent: React.FC<{ product: NonNullable<AppRouterOutput['get
             </div>
           </div>
 
-          {/* Скрытое поле URL изображения (не показываем, так как есть превью) */}
+          {/* Скрытое поле URL изображения */}
           <input type="hidden" name="image" value={formik.values.image} />
 
-          {/* Кнопка отправки */}
+          {/* Кнопки */}
           <div className={css.submitContainer}>
-            <Button loading={formik.isSubmitting}>Сохранить изменения</Button>
+            <Button {...buttonProps}>Сохранить изменения</Button>
 
             <button
               type="button"
@@ -155,8 +147,8 @@ const EditProductComponent: React.FC<{ product: NonNullable<AppRouterOutput['get
             </button>
           </div>
 
-          {/* Ошибка отправки */}
-          {submittingError && <Alert color="red">Ошибка: {submittingError}</Alert>}
+          {/* Alert из хука */}
+          <Alert {...alertProps} />
         </FormItems>
       </form>
     </div>
