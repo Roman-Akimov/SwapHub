@@ -22,3 +22,17 @@
   border-radius: 20px;
   float: left;
 }
+
+.editButton {
+  background-color: #158b25; /* Green */
+  margin-left: 20px;
+  border-radius: 15px;
+  border: 1px solid #066844;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}

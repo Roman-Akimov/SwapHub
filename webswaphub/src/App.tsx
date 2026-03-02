@@ -9,6 +9,7 @@ import { CreateProductForm } from './pages/CreateProductForm/CreateProductForm';
 import { SignUp } from './pages/SignUp/SignUp';
 import { SignIn } from './pages/SignIn/SignIn';
 import { SignOutPage } from './pages/SignOut/SignOut';
+import { EditProductPage } from './pages/EditProduct/EditProduct';
 
 export const App = () => {
   return (
@@ -22,6 +23,7 @@ export const App = () => {
             <Route path={routes.getAllProductsRoute()} element={<AllProducts />} />
             <Route path={routes.getNewProductRoute()} element={<CreateProductForm />} />
             <Route path={routes.getViewProductPage(routes.viewProductRouteParams)} element={<ViewProductPage />} />
+            <Route path={routes.getEditProductPage(routes.editProductRouteParams)} element={<EditProductPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
