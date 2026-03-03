@@ -11,6 +11,7 @@ import { SignIn } from './pages/SignIn/SignIn';
 import { SignOutPage } from './pages/SignOut/SignOut';
 import { EditProduct } from './pages/EditProduct/EditProduct';
 import { AppContextProvider } from './lib/ctx';
+import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
 
 export const App = () => {
   return (
@@ -26,6 +27,7 @@ export const App = () => {
               <Route path={routes.getNewProductRoute()} element={<CreateProductForm />} />
               <Route path={routes.getViewProductPage(routes.viewProductRouteParams)} element={<ViewProductPage />} />
               <Route path={routes.getEditProductPage(routes.editProductRouteParams)} element={<EditProduct />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
         </BrowserRouter>
