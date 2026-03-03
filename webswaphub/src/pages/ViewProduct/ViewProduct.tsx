@@ -4,51 +4,40 @@ import { trpc } from '../../lib/trpc';
 import css from './ViewProduct.module.scss';
 import { format } from 'date-fns';
 import { useMe } from '../../lib/ctx';
+import { withPageWrapper } from '../../lib/pageWrapper';
+import type { AppRouterOutput } from '@swaphub/backend/src/lib/router/router';
 
-export const ViewProductPage = () => {
-  const navigate = useNavigate(); // Добавляем navigate для перехода
-  const { productId: rawProductId } = useParams() as ViewProductRouteParams;
+export const ViewProductPage = withPageWrapper({
+  // Загружаем данные о товаре
+  useQuery: () => {
+    const { productId: rawProductId } = useParams() as ViewProductRouteParams;
+    const productId = rawProductId?.trim();
 
-  // Очищаем ID от возможных пробелов и спецсимволов
-  const productId = rawProductId?.trim();
+    return trpc.getProduct.useQuery(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      { productId: productId! },
+      { enabled: !!productId }
+    );
+  },
 
-  // Получаем данные о товаре
-  const { data, isLoading, isError, error } = trpc.getProduct.useQuery(
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    { productId: productId! },
-    { enabled: !!productId }
-  );
+  // Проверяем, что товар существует
+  checkExists: ({ queryResult }) => {
+    return !!queryResult.data.product;
+  },
+  checkExistsMessage: 'Товар не найден',
 
-  // Получаем данные о текущем пользователе
+  // Передаем данные в компонент
+  setProps: ({ queryResult }) => {
+    return {
+      product: queryResult.data.product,
+    };
+  },
+})(({ product }: { product: NonNullable<AppRouterOutput['getProduct']['product']> }) => {
+  const navigate = useNavigate();
   const me = useMe();
-
-  if (isLoading) {
-    return <div>Загрузка...</div>;
-  }
-
-  if (isError) {
-    if (error.data?.code === 'BAD_REQUEST') {
-      return <div>Неправильный формат ID товара</div>;
-    }
-    if (error.data?.code === 'NOT_FOUND') {
-      return <div>Продукт не найден</div>;
-    }
-    return <div>Что-то пошло не так: {error.message}</div>;
-  }
-
-  if (!data) {
-    return <div>Нет данных</div>;
-  }
-
-  const product = data.product || data;
-
-  if (!product) {
-    return <div>Извините, продукт не найден..</div>;
-  }
 
   // Проверяем, является ли текущий пользователь владельцем товара
   const isOwner = me?.id === product.ownerId;
-
   return (
     <div style={{ padding: 20 }}>
       {/* Шапка с названием и кнопкой редактирования (если владелец) */}
@@ -67,9 +56,9 @@ export const ViewProductPage = () => {
       <p>{product.description}</p>
 
       <div className={css.owner}>
-        Владелец: {data.product.owner.nickName}
+        Владелец: {product.owner.nickName}
         <br />
-        {data.product.owner.firstName} {data.product.owner.lastName}
+        {product.owner.firstName} {product.owner.lastName}
       </div>
 
       {isOwner && (
@@ -84,4 +73,4 @@ export const ViewProductPage = () => {
       )}
     </div>
   );
-};
+});

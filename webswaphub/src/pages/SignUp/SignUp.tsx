@@ -11,6 +11,7 @@ import { z } from 'zod';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { getAllProductsRoute } from '../../lib/routes';
+import { withPageWrapper } from '../../lib/pageWrapper';
 
 // Тип для значений формы
 type FormValues = {
@@ -22,7 +23,9 @@ type FormValues = {
   passwordAgain: string;
 };
 
-export const SignUp = () => {
+export const SignUp = withPageWrapper({
+  redirectAuthorized: true,
+})(() => {
   const navigate = useNavigate();
   const trpcUtils = trpc.useContext();
   const [submittingError, setSubmittingError] = useState<string | null>(null);
@@ -81,4 +84,4 @@ export const SignUp = () => {
       </FormItems>
     </form>
   );
-};
+});

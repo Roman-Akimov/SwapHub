@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import css from './CreateProductForm.module.scss';
 import type { FormError, FormState } from './FormState';
 import { queryClient, trpc } from '../../lib/trpc';
+import { withPageWrapper } from '../../lib/pageWrapper';
 
 const initialState: FormState = {
   name: '',
@@ -11,7 +12,9 @@ const initialState: FormState = {
   currency: 'RUB',
 };
 
-export const CreateProductForm = () => {
+export const CreateProductForm = withPageWrapper({
+  authorizedOnly: true,
+})(() => {
   const [state, setState] = useState<FormState>(initialState);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [errors, setErrors] = useState<FormError>({});
@@ -253,4 +256,4 @@ export const CreateProductForm = () => {
       </div>
     </div>
   );
-};
+});

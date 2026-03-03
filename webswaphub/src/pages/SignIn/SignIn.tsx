@@ -8,13 +8,11 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { getAllProductsRoute } from '../../lib/routes';
 import { useForm } from '../../lib/form';
+import { withPageWrapper } from '../../lib/pageWrapper';
 
-// type FormValues = {
-//   email: string;
-//   password: string;
-// };
-
-export const SignIn = () => {
+export const SignIn = withPageWrapper({
+  redirectAuthorized: true,
+})(() => {
   const navigate = useNavigate();
   const trpcUtils = trpc.useUtils();
   const signIn = trpc.signIn.useMutation();
@@ -46,4 +44,4 @@ export const SignIn = () => {
       </form>
     </div>
   );
-};
+});

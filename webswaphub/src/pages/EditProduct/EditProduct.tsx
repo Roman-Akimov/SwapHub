@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { getViewProductPage, type EditProductRouteParams } from '../../lib/routes';
 import { trpc } from '../../lib/trpc';
-import type { AppRouterOutput } from '@swaphub/backend/src/lib/router/router';
 import { zUpdateProductTrpcInput } from '@swaphub/backend/src/lib/router/updateProduct/updateProduct';
 import css from './EditProduct.module.scss';
 import { FormItems } from '../../components/FormItems/FormItems';
@@ -9,11 +8,31 @@ import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
 import { Alert } from '../../components/Alert/Alert';
 import { useForm } from '../../lib/form';
-import { useMe } from '../../lib/ctx';
+import { withPageWrapper } from '../../lib/pageWrapper';
 
-const EditProductComponent: React.FC<{ product: NonNullable<AppRouterOutput['getProduct']['product']> }> = ({
-  product,
-}) => {
+export const EditProduct = withPageWrapper({
+  authorizedOnly: true,
+  useQuery: () => {
+    const { productId } = useParams() as EditProductRouteParams;
+    return trpc.getProduct.useQuery({
+      productId,
+    });
+  },
+  checkExists: ({ queryResult }) => {
+    return !!queryResult.data.product;
+  },
+  checkExistsMessage: 'Товар не найден!',
+  checkAccess: ({ queryResult, ctx }) => {
+    return !!ctx.me && ctx.me.id === queryResult.data.product?.ownerId;
+  },
+  checkAccessMessage: 'Товар может редактировать только владелец',
+  setProps: ({ queryResult }) => {
+    return {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      product: queryResult.data.product!,
+    };
+  },
+})(({ product }) => {
   const navigate = useNavigate();
   const updateProduct = trpc.updateProduct.useMutation();
 
@@ -154,34 +173,4 @@ const EditProductComponent: React.FC<{ product: NonNullable<AppRouterOutput['get
       </form>
     </div>
   );
-};
-
-export const EditProductPage = () => {
-  const { productId } = useParams() as EditProductRouteParams;
-
-  const getProductResult = trpc.getProduct.useQuery({ productId });
-  const me = useMe();
-
-  if (getProductResult.isLoading || getProductResult.isFetching) {
-    return <span className={css.loading}>Загрузка...</span>;
-  }
-
-  if (getProductResult.isError) {
-    return <Alert color="red">Ошибка: {getProductResult.error?.message}</Alert>;
-  }
-  if (!getProductResult.data?.product) {
-    return <Alert color="red">Товар не найден</Alert>;
-  }
-
-  const product = getProductResult.data.product;
-
-  if (!me) {
-    return <Alert color="red">Только для авторизованных пользователей</Alert>;
-  }
-
-  if (me.id !== product.ownerId) {
-    return <Alert color="red">Товар может быть редактирован только автором</Alert>;
-  }
-
-  return <EditProductComponent product={product} />;
-};
+});
