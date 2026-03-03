@@ -3,6 +3,7 @@ import { type ViewProductRouteParams, getEditProductPage } from '../../lib/route
 import { trpc } from '../../lib/trpc';
 import css from './ViewProduct.module.scss';
 import { format } from 'date-fns';
+import { useMe } from '../../lib/ctx';
 
 export const ViewProductPage = () => {
   const navigate = useNavigate(); // Добавляем navigate для перехода
@@ -19,7 +20,7 @@ export const ViewProductPage = () => {
   );
 
   // Получаем данные о текущем пользователе
-  const { data: meData } = trpc.getMe.useQuery();
+  const me = useMe();
 
   if (isLoading) {
     return <div>Загрузка...</div>;
@@ -46,7 +47,7 @@ export const ViewProductPage = () => {
   }
 
   // Проверяем, является ли текущий пользователь владельцем товара
-  const isOwner = meData?.me?.id === product.ownerId;
+  const isOwner = me?.id === product.ownerId;
 
   return (
     <div style={{ padding: 20 }}>

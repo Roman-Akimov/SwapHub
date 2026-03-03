@@ -10,23 +10,26 @@ import { SignUp } from './pages/SignUp/SignUp';
 import { SignIn } from './pages/SignIn/SignIn';
 import { SignOutPage } from './pages/SignOut/SignOut';
 import { EditProductPage } from './pages/EditProduct/EditProduct';
+import { AppContextProvider } from './lib/ctx';
 
 export const App = () => {
   return (
     <TrpcProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path={routes.getSignOutRoute()} element={<SignOutPage />} />
-          <Route element={<Layout />}>
-            <Route path={routes.getSignUpRoute()} element={<SignUp />} />
-            <Route path={routes.getSignInRoute()} element={<SignIn />} />
-            <Route path={routes.getAllProductsRoute()} element={<AllProducts />} />
-            <Route path={routes.getNewProductRoute()} element={<CreateProductForm />} />
-            <Route path={routes.getViewProductPage(routes.viewProductRouteParams)} element={<ViewProductPage />} />
-            <Route path={routes.getEditProductPage(routes.editProductRouteParams)} element={<EditProductPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <AppContextProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path={routes.getSignOutRoute()} element={<SignOutPage />} />
+            <Route element={<Layout />}>
+              <Route path={routes.getSignUpRoute()} element={<SignUp />} />
+              <Route path={routes.getSignInRoute()} element={<SignIn />} />
+              <Route path={routes.getAllProductsRoute()} element={<AllProducts />} />
+              <Route path={routes.getNewProductRoute()} element={<CreateProductForm />} />
+              <Route path={routes.getViewProductPage(routes.viewProductRouteParams)} element={<ViewProductPage />} />
+              <Route path={routes.getEditProductPage(routes.editProductRouteParams)} element={<EditProductPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AppContextProvider>
     </TrpcProvider>
   );
 };

@@ -7,17 +7,10 @@ import {
   getSignUpRoute,
 } from '../../lib/routes';
 import css from './Layout.module.scss';
-import { trpc } from '../../lib/trpc';
-import { useEffect } from 'react';
+import { useMe } from '../../lib/ctx';
 
 export const Layout = () => {
-  const { data, isLoading, isFetching } = trpc.getMe.useQuery();
-
-  // Добавим логи
-  useEffect(() => {}, [data, isLoading, isFetching]);
-
-  const isAuthLoading = isLoading || isFetching;
-  const isAuthenticated = data?.me !== null && data?.me !== undefined;
+  const me = useMe(); // просто пользователь или null
 
   return (
     <div className={css.layout}>
@@ -32,40 +25,36 @@ export const Layout = () => {
               </Link>
             </li>
 
-            {!isAuthLoading && (
+            {/* Просто проверяем - есть пользователь или нет */}
+            {me ? (
+              // Контент для авторизованных пользователей
               <>
-                {isAuthenticated ? (
-                  // Контент для авторизованных пользователей
-                  <>
-                    <li className={css.item}>
-                      <Link className={css.link} to={getNewProductRoute()}>
-                        Выставить товар
-                      </Link>
-                    </li>
-                    <li className={css.item}>
-                      <Link className={css.link} to={getSignOutRoute()}>
-                        Log Out ({data.me?.nickName})
-                      </Link>
-                    </li>
-                  </>
-                ) : (
-                  // Контент для НЕ авторизованных пользователей
-                  <>
-                    <li className={css.item}>
-                      <Link className={css.link} to={getSignUpRoute()}>
-                        Регистрация
-                      </Link>
-                    </li>
-                    <li className={css.item}>
-                      <Link className={css.link} to={getSignInRoute()}>
-                        Вход
-                      </Link>
-                    </li>
-                  </>
-                )}
+                <li className={css.item}>
+                  <Link className={css.link} to={getNewProductRoute()}>
+                    Выставить товар
+                  </Link>
+                </li>
+                <li className={css.item}>
+                  <Link className={css.link} to={getSignOutRoute()}>
+                    Выйти ({me.nickName})
+                  </Link>
+                </li>
+              </>
+            ) : (
+              // Контент для НЕ авторизованных пользователей
+              <>
+                <li className={css.item}>
+                  <Link className={css.link} to={getSignUpRoute()}>
+                    Регистрация
+                  </Link>
+                </li>
+                <li className={css.item}>
+                  <Link className={css.link} to={getSignInRoute()}>
+                    Вход
+                  </Link>
+                </li>
               </>
             )}
-            {isAuthLoading}
           </ul>
         </nav>
       </header>

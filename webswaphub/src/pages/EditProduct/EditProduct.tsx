@@ -9,6 +9,7 @@ import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
 import { Alert } from '../../components/Alert/Alert';
 import { useForm } from '../../lib/form';
+import { useMe } from '../../lib/ctx';
 
 const EditProductComponent: React.FC<{ product: NonNullable<AppRouterOutput['getProduct']['product']> }> = ({
   product,
@@ -159,26 +160,20 @@ export const EditProductPage = () => {
   const { productId } = useParams() as EditProductRouteParams;
 
   const getProductResult = trpc.getProduct.useQuery({ productId });
-  const getMeResult = trpc.getMe.useQuery();
+  const me = useMe();
 
-  if (getProductResult.isLoading || getProductResult.isFetching || getMeResult.isLoading || getMeResult.isFetching) {
+  if (getProductResult.isLoading || getProductResult.isFetching) {
     return <span className={css.loading}>Загрузка...</span>;
   }
 
   if (getProductResult.isError) {
     return <Alert color="red">Ошибка: {getProductResult.error?.message}</Alert>;
   }
-
-  if (getMeResult.isError) {
-    return <Alert color="red">Ошибка: {getMeResult.error?.message}</Alert>;
-  }
-
   if (!getProductResult.data?.product) {
     return <Alert color="red">Товар не найден</Alert>;
   }
 
   const product = getProductResult.data.product;
-  const me = getMeResult.data?.me;
 
   if (!me) {
     return <Alert color="red">Только для авторизованных пользователей</Alert>;
