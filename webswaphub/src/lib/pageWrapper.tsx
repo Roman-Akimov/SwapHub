@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ErrorPageComponent } from '../components/ErrorPageComponent/ErrorPageComponent';
 import { UseAppContext, type AppContext } from './ctx';
 import { getAllProductsRoute } from './routes';
-import { NotFoundPage } from '../pages/NotFoundPage/NotFoundPage';
+import { NotFoundPage } from '../pages/other/NotFoundPage/NotFoundPage';
 
 // для проверки существования
 class CheckExistsError extends Error {}
