@@ -20,17 +20,13 @@ export const ViewProductPage = withPageWrapper({
     );
   },
 
-  // Проверяем, что товар существует
-  checkExists: ({ queryResult }) => {
-    return !!queryResult.data.product;
-  },
-  checkExistsMessage: 'Товар не найден',
-
   // Передаем данные в компонент
-  setProps: ({ queryResult }) => {
-    return {
-      product: queryResult.data.product,
-    };
+  setProps: ({ queryResult, checkExists }) => {
+    // Проверяем существование товара через валидатор
+    const product = checkExists(queryResult.data.product, 'Товар не найден');
+
+    // Возвращаем гарантированно существующий product
+    return { product };
   },
 })(({ product }: { product: NonNullable<AppRouterOutput['getProduct']['product']> }) => {
   const navigate = useNavigate();

@@ -18,19 +18,10 @@ export const EditProduct = withPageWrapper({
       productId,
     });
   },
-  checkExists: ({ queryResult }) => {
-    return !!queryResult.data.product;
-  },
-  checkExistsMessage: 'Товар не найден!',
-  checkAccess: ({ queryResult, ctx }) => {
-    return !!ctx.me && ctx.me.id === queryResult.data.product?.ownerId;
-  },
-  checkAccessMessage: 'Товар может редактировать только владелец',
-  setProps: ({ queryResult }) => {
-    return {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      product: queryResult.data.product!,
-    };
+  setProps: ({ queryResult, ctx, checkAccess, checkExists }) => {
+    const product = checkExists(queryResult.data.product, 'Товар не найден!');
+    checkAccess(ctx.me?.id === product.ownerId, 'Товар может редактировать только владелец');
+    return { product };
   },
 })(({ product }) => {
   const navigate = useNavigate();
