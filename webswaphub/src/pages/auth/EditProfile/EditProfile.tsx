@@ -28,7 +28,7 @@ const General = ({ me }: { me: NonNullable<AppRouterOutput['getMe']['me']> }) =>
       const result = await updateProfile.mutateAsync(values);
       trpcUtils.getMe.setData(undefined, { me: result.user });
     },
-    successMessage: 'Profile updated',
+    successMessage: 'Профиль обновлен',
     resetOnSuccess: false,
   });
 
