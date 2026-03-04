@@ -1,6 +1,7 @@
 import { Link, Outlet } from 'react-router-dom';
 import {
   getAllProductsRoute,
+  getEditProfileRoute,
   getNewProductRoute,
   getSignInRoute,
   getSignOutRoute,
@@ -32,6 +33,11 @@ export const Layout = () => {
                 <li className={css.item}>
                   <Link className={css.link} to={getNewProductRoute()}>
                     Выставить товар
+                  </Link>
+                </li>
+                <li className={css.item}>
+                  <Link className={css.link} to={getEditProfileRoute()}>
+                    Редактировать профиль
                   </Link>
                 </li>
                 <li className={css.item}>

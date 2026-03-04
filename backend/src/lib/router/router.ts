@@ -7,6 +7,7 @@ import { getMeTrpcRoute } from './auth/getMe/getMe';
 import { signInTrpcRoute } from './auth/signIn/signIn.endpoint';
 import { signUpTrpcRoute } from './auth/signUp/signUp.endpoint';
 import { updateProductTrpcRoute } from './products/updateProduct/updateProduct.endpoint';
+import { updateProfileTrpcRoute } from './auth/updateProfile/updateProfile.endpoint';
 
 export const appRouter = app.router({
   getProduct: getProductTrpcRoute,
@@ -16,6 +17,7 @@ export const appRouter = app.router({
   signIn: signInTrpcRoute,
   getMe: getMeTrpcRoute,
   updateProduct: updateProductTrpcRoute,
+  updateProfile: updateProfileTrpcRoute,
 });
 
 export type AppRouter = typeof appRouter;
