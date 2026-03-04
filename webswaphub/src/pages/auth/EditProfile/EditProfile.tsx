@@ -15,10 +15,9 @@ type EditProfileProps = {
 
 export const EditProfilePage = withPageWrapper({
   authorizedOnly: true,
-  setProps: ({ ctx }) => {
+  setProps: ({ getAuthorizedMe }) => {
     return {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      me: ctx.me!,
+      me: getAuthorizedMe(),
     };
   },
 })(({ me }: EditProfileProps) => {
