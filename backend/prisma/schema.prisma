@@ -32,15 +32,16 @@ model User {
 }
 
 model Product {
-    id          String   @id @default(uuid())
-    name        String   @db.VarChar(120)
-    description String   @db.VarChar(2000)
-    imageFile   String   @db.VarChar(2048)
-    price       Int
-    currency    Currency
-    createdAt   DateTime @default(now())
-    ownerId     String
-    owner       User     @relation(fields: [ownerId], references: [id])
+    id           String   @id @default(uuid())
+    name         String   @db.VarChar(120)
+    description  String   @db.VarChar(2000)
+    imageFile    String   @db.VarChar(2048)
+    price        Int
+    currency     Currency
+    createdAt    DateTime @default(now())
+    ownerId      String
+    owner        User     @relation(fields: [ownerId], references: [id])
+    serialNumber Int      @unique @default(autoincrement())
 }
 
 model Session {

@@ -29,6 +29,10 @@ export const getSignOutRoute = () => {
   return '/sign-out';
 };
 
+export const getEditProfileRoute = () => {
+  return '/edit-profile';
+};
+
 export const viewProductRouteParams = getRouteParams({ productId: true });
 
 export type ViewProductRouteParams = typeof viewProductRouteParams;
