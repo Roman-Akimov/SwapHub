@@ -8,6 +8,7 @@ import { signInTrpcRoute } from './auth/signIn/signIn.endpoint';
 import { signUpTrpcRoute } from './auth/signUp/signUp.endpoint';
 import { updateProductTrpcRoute } from './products/updateProduct/updateProduct.endpoint';
 import { updateProfileTrpcRoute } from './auth/updateProfile/updateProfile.endpoint';
+import { updatePasswordTrpcRoute } from './auth/updatePassword/updatePassword.endpoint';
 
 export const appRouter = app.router({
   getProduct: getProductTrpcRoute,
@@ -18,6 +19,7 @@ export const appRouter = app.router({
   getMe: getMeTrpcRoute,
   updateProduct: updateProductTrpcRoute,
   updateProfile: updateProfileTrpcRoute,
+  updatePassword: updatePasswordTrpcRoute,
 });
 
 export type AppRouter = typeof appRouter;
