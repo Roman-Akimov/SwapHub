@@ -1,6 +1,5 @@
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 import { app } from '../trpc/trpc';
-import { getProductTrpcRoute } from './products/getProduct/getProduct';
 import { getProductsTrpcRoute } from './products/getProducts/getProducts';
 import { createProductTrpcRoute } from './products/createProduct/createProduct';
 import { getMeTrpcRoute } from './auth/getMe/getMe';
@@ -9,6 +8,7 @@ import { signUpTrpcRoute } from './auth/signUp/signUp.endpoint';
 import { updateProductTrpcRoute } from './products/updateProduct/updateProduct.endpoint';
 import { updateProfileTrpcRoute } from './auth/updateProfile/updateProfile.endpoint';
 import { updatePasswordTrpcRoute } from './auth/updatePassword/updatePassword.endpoint';
+import { getProductTrpcRoute } from './products/getProduct/getProduct';
 
 export const appRouter = app.router({
   getProduct: getProductTrpcRoute,
