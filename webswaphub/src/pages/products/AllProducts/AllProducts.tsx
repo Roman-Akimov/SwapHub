@@ -2,12 +2,14 @@ import { Link } from 'react-router-dom';
 import { getViewProductPage } from '../../../lib/routes';
 import { trpc } from '../../../lib/trpc';
 import css from './AllProducts.module.scss';
+import { useInView } from 'react-intersection-observer';
+import { useEffect } from 'react';
 
 export const AllProducts = () => {
   const { data, error, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage, isRefetching } =
     trpc.getProducts.useInfiniteQuery(
       {
-        limit: 3,
+        limit: 3, // Подгружает по 3 товара за раз
       },
       {
         getNextPageParam: (lastPage) => {
@@ -15,6 +17,21 @@ export const AllProducts = () => {
         },
       }
     );
+
+  // Используем useInView с дополнительными настройками
+  const { ref, inView } = useInView({
+    threshold: 0,
+    rootMargin: '100px',
+    // Важно! Не запускаем повторно, если элемент уже был в области видимости
+    triggerOnce: false,
+  });
+
+  // Эффект для подгрузки при появлении в области видимости
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   if (isLoading || isRefetching) {
     return (
@@ -59,7 +76,6 @@ export const AllProducts = () => {
   return (
     <div className={css.container}>
       <h1 className={css.title}>Все товары</h1>
-
       <div className={css.products}>
         {products.map((product) => {
           return (
@@ -77,19 +93,10 @@ export const AllProducts = () => {
         })}
       </div>
 
-      {hasNextPage && (
-        <div className={css.loadMore}>
-          <button
-            onClick={() => {
-              return fetchNextPage();
-            }}
-            disabled={isFetchingNextPage}
-            className={css.loadMoreButton}
-          >
-            {isFetchingNextPage ? 'Загрузка...' : 'Загрузить еще'}
-          </button>
-        </div>
-      )}
+      <div ref={ref} className={css.loadMoreContainer}>
+        {isFetchingNextPage && <div className={css.loading}>Загрузка дополнительных товаров...</div>}
+        {!hasNextPage && products.length > 0 && <div className={css.endMessage}>Все товары загружены</div>}
+      </div>
     </div>
   );
 };
