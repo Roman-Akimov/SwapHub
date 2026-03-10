@@ -5,6 +5,7 @@ import { ErrorPageComponent } from '../components/ErrorPageComponent/ErrorPageCo
 import { UseAppContext, type AppContext } from './ctx';
 import { getAllProductsRoute } from './routes';
 import { NotFoundPage } from '../pages/other/NotFoundPage/NotFoundPage';
+import { Loader } from '../components/Loader/Loader';
 
 // для проверки существования
 class CheckExistsError extends Error {}
@@ -92,7 +93,7 @@ const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult
   }, [redirectNeeded, navigate]);
 
   if (queryResult?.isLoading || queryResult?.isFetching || redirectNeeded) {
-    return <p>Загрузка...</p>;
+    return <Loader type="page" />;
   }
 
   if (queryResult?.isError) {

@@ -4,6 +4,7 @@ import { trpc } from '../../../lib/trpc';
 import css from './AllProducts.module.scss';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
+import { Loader } from '../../../components/Loader/Loader';
 
 export const AllProducts = () => {
   const { data, error, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage, isRefetching } =
@@ -37,7 +38,7 @@ export const AllProducts = () => {
     return (
       <div className={css.container}>
         <h1 className={css.title}>Все товары</h1>
-        <div>Загрузка товаров...</div>
+        <Loader type={'section'} />
       </div>
     );
   }
@@ -94,7 +95,7 @@ export const AllProducts = () => {
       </div>
 
       <div ref={ref} className={css.loadMoreContainer}>
-        {isFetchingNextPage && <div className={css.loading}>Загрузка дополнительных товаров...</div>}
+        {isFetchingNextPage && <Loader type={'section'} />}
         {!hasNextPage && products.length > 0 && <div className={css.endMessage}>Все товары загружены</div>}
       </div>
     </div>

@@ -63,7 +63,7 @@ export const SignUp = withPageWrapper({
         void trpcUtils.invalidate();
         navigate(getAllProductsRoute());
       } catch (err) {
-        setSubmittingError(err instanceof Error ? err.message : 'Unknown error');
+        setSubmittingError(err instanceof Error ? err.message : 'Неизвестная ошибка');
       }
     },
   });
